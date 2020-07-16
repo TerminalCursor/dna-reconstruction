@@ -43,7 +43,7 @@ func TestLength(t *testing.T) {
 	for _, tt := range tests {
 		testname := fmt.Sprintf("%s", tt.bases)
 		t.Run(testname, func(t *testing.T) {
-			ans := make_strand(tt.bases).Length()
+			ans := MakeStrand(tt.bases).Length()
 			if ans != tt.want {
 				t.Errorf("got %d, want %d", ans, tt.want)
 			}

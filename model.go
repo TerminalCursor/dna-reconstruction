@@ -12,7 +12,7 @@ type Strand struct {
 	strand []Nucleotide
 }
 
-func make_strand(bases string) Strand {
+func MakeStrand(bases string) Strand {
 	var outStrand Strand
 	for i := 0; i < len(bases); i++ {
 		if(bases[i] != 0x20) {
