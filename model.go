@@ -49,7 +49,7 @@ func (n Nucleotide) Print() {
 
 func (s Strand) Print() {
 	for i := 0; i < s.Length(); i++ {
-		fmt.Printf("%c", s.strand[i].base)
+		s.strand[i].Print()
 	}
 	fmt.Printf("\n")
 }
