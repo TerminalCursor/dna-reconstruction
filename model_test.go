@@ -26,3 +26,27 @@ func TestComplement(t *testing.T) {
 		})
 	}
 }
+
+func TestLength(t *testing.T) {
+	var tests = []struct {
+		bases string
+		want int
+	}{
+		{"ATCG", 4},
+		{"A TCG", 4},
+		{"TAGC", 4},
+		{"A T C G", 4},
+		{"A", 1},
+		{"", 0},
+	}
+
+	for _, tt := range tests {
+		testname := fmt.Sprintf("%s", tt.bases)
+		t.Run(testname, func(t *testing.T) {
+			ans := make_strand(tt.bases).Length()
+			if ans != tt.want {
+				t.Errorf("got %d, want %d", ans, tt.want)
+			}
+		})
+	}
+}

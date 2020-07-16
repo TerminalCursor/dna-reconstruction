@@ -12,6 +12,16 @@ type Strand struct {
 	strand []Nucleotide
 }
 
+func make_strand(bases string) Strand {
+	var outStrand Strand
+	for i := 0; i < len(bases); i++ {
+		if(bases[i] != 0x20) {
+			outStrand.strand = append(outStrand.strand, Nucleotide{bases[i]})
+		}
+	}
+	return outStrand
+}
+
 func (n Nucleotide) Complement() Nucleotide {
 	var outN Nucleotide
 	switch n.base {
