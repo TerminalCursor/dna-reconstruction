@@ -50,3 +50,40 @@ func TestLength(t *testing.T) {
 		})
 	}
 }
+
+func CompareSlice(i, j []int) bool {
+	if len(i) == len(j) {
+		for k := 0; k < len(i); k++ {
+			if i[k] != j[k] {
+				return false
+			}
+		}
+		return true
+	}
+	return false
+}
+
+func TestMatch(t *testing.T) {
+	thescaffold := MakeStrand("TGAT AGAC GGTT TTTC GCCC TTTG ACGT TGGA GTCC ACGT TCTT TAAT AGTG GACT CTTG")
+	var tests = []struct {
+		staple Strand
+		scaffold Strand
+		want []int
+	}{
+		{MakeStrand("ACTA"), thescaffold, []int{0}},
+		{MakeStrand("AAC"), thescaffold, []int{21, 27, 57}},
+		{MakeStrand("CCAA"), thescaffold, []int{8}},
+		{MakeStrand(""), MakeStrand(""), []int{}},
+		{MakeStrand("A"), MakeStrand(""), []int{}},
+	}
+
+	for _, tt := range tests {
+		testname := fmt.Sprintf("%s", tt.staple.Bases())
+		t.Run(testname, func(t *testing.T) {
+			ans := tt.staple.Match(tt.scaffold)
+			if !CompareSlice(ans, tt.want) {
+				t.Errorf("got %v, want %v", ans, tt.want)
+			}
+		})
+	}
+}

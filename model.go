@@ -1,9 +1,5 @@
 package main
 
-import (
-	"fmt"
-)
-
 type Nucleotide struct {
 	base byte
 }
@@ -43,13 +39,25 @@ func (s Strand) Length() int {
 	return len(s.strand)
 }
 
-func (n Nucleotide) Print() {
-	fmt.Printf("%c", n.base)
+func (s Strand) Bases() string {
+	base := ""
+	for i := 0; i < s.Length(); i++ {
+		base += string(s.strand[i].base)
+	}
+	return base
 }
 
-func (s Strand) Print() {
-	for i := 0; i < s.Length(); i++ {
-		s.strand[i].Print()
+func (substrand Strand) Match(strand Strand) []int {
+	var indices []int
+	for i := 0; i < strand.Length() - substrand.Length() + 1; i++ {
+		for j := 0; j < substrand.Length(); j++ {
+			if strand.strand[i + j] != substrand.strand[j].Complement() {
+				break
+			}
+			if j + 1 == substrand.Length() {
+				indices = append(indices, i)
+			}
+		}
 	}
-	fmt.Printf("\n")
+	return indices
 }
