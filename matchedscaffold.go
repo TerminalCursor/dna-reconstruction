@@ -4,6 +4,35 @@ import (
 	"fmt"
 )
 
+/* TODO: Future version to include multiple staples
+type MatchedScaffold struct {
+	scaffold Strand
+	staples []Staple
+	sbinds [][]int
+}
+
+func (matchedScaffold MatchedScaffold) MatchedString() string {
+	outputString := fmt.Sprintf("%s\n", matchedScaffold.scaffold.Bases())
+	for i:= 0; i < matchedScaffold.scaffold.Length(); i++ {
+		didPrint := false
+		for j := 0; j < len(matchedScaffold.staples); j++ {
+			for k := 0; k < matchedScaffold.staples[j].Length(); k++ {
+				if matchedScaffold.sbinds[j][k] <= i && i < (matchedScaffold.sbinds[j][k] + matchedScaffold.staples[j].pieces[k].Length()) && matchedScaffold.sbinds[j][k] != -1 {
+					outputString += fmt.Sprintf("%c", matchedScaffold.staples[j].pieces[k].Bases()[i-matchedScaffold.sbinds[j][k])
+					didPrint = true
+				}
+			}
+		}
+		if !didPrint {
+			outputString += fmt.Sprintf(" ")
+		}
+	}
+	outputString += "\n"
+	return outputString
+}
+*/
+
+/* OLD 2.0 VERSION */
 type MatchedScaffold struct {
 	scaffold Strand
 	staple Staple
@@ -28,7 +57,7 @@ func (matchedScaffold MatchedScaffold) MatchedString() string {
 	return outputString
 }
 
-/*
+/* OLD VERSION
 type MatchedScaffold struct {
 	scaffold Strand
 	staple Staple
