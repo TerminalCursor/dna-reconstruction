@@ -165,6 +165,7 @@ func main() {
 			fmt.Printf("%v\n", staplePartitionMatches)
 			var possibleCombinations [][]int
 			for ijk, matched := range matchedScaffolds {
+				nextMatchedScaffolds = append(nextMatchedScaffolds, matched)
 				if len(matched.staples) == 0 {
 					possibleCombinations = GetPermutations(staplePartitionMatches, []int{}, []int{}, WINDOW_SIZE)
 				} else {
@@ -185,22 +186,7 @@ func main() {
 					} else if matchedScaffold.Score() > topScores[2] {
 						topScores[2] = matchedScaffold.Score()
 					}
-					if ijk % 100 == 0 {
-						// Sort by score (highest to lowest)
-						sort.Slice(nextMatchedScaffolds, func(i, j int) bool {
-							return nextMatchedScaffolds[i].Score() >= nextMatchedScaffolds[j].Score()
-						})
-						MAX := 3000
-						if len(nextMatchedScaffolds) < MAX {
-							MAX = len(nextMatchedScaffolds)
-						}
-						// Clean up matches to MAX+100 max entries
-						nextMatchedScaffolds = nextMatchedScaffolds[:MAX]
-					}
-				}
-				if len(possibleCombinations) == 0 {
-					nextMatchedScaffolds = append(nextMatchedScaffolds, matched)
-					if ijk % 100 == 0 {
+					if ijk % 100 == 0 || len(nextMatchedScaffolds) > 3500 {
 						// Sort by score (highest to lowest)
 						sort.Slice(nextMatchedScaffolds, func(i, j int) bool {
 							return nextMatchedScaffolds[i].Score() >= nextMatchedScaffolds[j].Score()
