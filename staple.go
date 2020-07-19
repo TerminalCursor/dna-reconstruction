@@ -19,3 +19,11 @@ func MakeStaple(s Strand, partition int) Staple {
 func (s Staple) Length() int {
 	return len(s.pieces)
 }
+
+func (s Staple) TotalLength() int {
+	totalLength := 0
+	for i := 0; i < s.Length(); i++ {
+		totalLength += s.pieces[i].Length()
+	}
+	return totalLength
+}
