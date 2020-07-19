@@ -17,10 +17,33 @@ func TestStapleLength(t *testing.T) {
 		{MakeStaple(MakeStrand(""), 3), 0},
 	}
 
-	for _, tt := range tests {
-		testname := fmt.Sprintf("%v", tt.staple.pieces)
+	for idx, tt := range tests {
+		testname := fmt.Sprintf("%v", idx)
 		t.Run(testname, func(t *testing.T) {
 			ans := tt.staple.Length()
+			if ans != tt.want {
+				t.Errorf("got %d, want %d", ans, tt.want)
+			}
+		})
+	}
+}
+
+func TestStapleTotalLength(t *testing.T) {
+	var tests = []struct {
+		staple Staple
+		want int
+	}{
+		{MakeStaple(MakeStrand("ACTCTGAC"), 3), 8},
+		{MakeStaple(MakeStrand("ACTCTG"), 3), 6},
+		{MakeStaple(MakeStrand("ACTCTGACTG"), 3), 10},
+		{MakeStaple(MakeStrand("A"), 3), 1},
+		{MakeStaple(MakeStrand(""), 3), 0},
+	}
+
+	for idx, tt := range tests {
+		testname := fmt.Sprintf("%v", idx)
+		t.Run(testname, func(t *testing.T) {
+			ans := tt.staple.TotalLength()
 			if ans != tt.want {
 				t.Errorf("got %d, want %d", ans, tt.want)
 			}
