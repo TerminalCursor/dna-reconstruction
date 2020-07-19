@@ -39,6 +39,14 @@ func (s Strand) Length() int {
 	return len(s.strand)
 }
 
+func (s Strand) Complement() Strand {
+	var outStrand Strand
+	for i := 0; i < s.Length(); i++ {
+		outStrand.strand = append(outStrand.strand, s.strand[i].Complement())
+	}
+	return outStrand
+}
+
 func (s Strand) Bases() string {
 	base := ""
 	for i := 0; i < s.Length(); i++ {
