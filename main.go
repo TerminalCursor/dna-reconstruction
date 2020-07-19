@@ -106,7 +106,7 @@ func BindingJoin(bindingSites [][]int) []int {
 func main() {
 	fmt.Printf("\033[91mDNA\033[0m \033[94mReconstruction\033[0m \033[33mv00.01\033[0m\n")
 	/* MULTI STAPLES */
-	WINDOW_SIZE := 6
+	WINDOW_SIZE := 8
 	var staple_strands []Strand
 	/*
 	FILE READING
@@ -134,6 +134,7 @@ func main() {
 			for i := 0; i < WINDOW_SIZE; i++ {
 				staple_options[idx] = append(staple_options[idx], MakeStaple(MakeStrand(staple_strand.Bases()[i:]), WINDOW_SIZE))
 			}
+			fmt.Printf("Staple Chunk: %d of %d\n", idx + 1, len(staple_strands))
 		} else {
 			fmt.Printf("Cannot generate 2 staples from given sequence at %d windowsize\n", WINDOW_SIZE)
 			os.Exit(1)
@@ -145,7 +146,9 @@ func main() {
 	}
 	m13mp18 := MakeStrand(m13mp18f.Bases()[:cut_length]).Reverse()
 	var topMatch []MatchedScaffold
-	for _, staples := range GetStaples(staple_options, []Staple{}) {
+	var sorted_staples = GetStaples(staple_options, []Staple{})
+	for idx, staples := range sorted_staples {
+		fmt.Printf("Round: %d of %d\n", idx + 1, len(sorted_staples))
 		var matchedScaffolds []MatchedScaffold = []MatchedScaffold{MatchedScaffold{m13mp18, []Staple{}, [][]int{}}}
 		var nextMatchedScaffolds []MatchedScaffold
 		for _, staple := range staples {
