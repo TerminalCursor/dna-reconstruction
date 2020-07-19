@@ -70,11 +70,11 @@ func TestMatch(t *testing.T) {
 		scaffold Strand
 		want []int
 	}{
-		{MakeStrand("ACTA"), thescaffold, []int{0}},
-		{MakeStrand("AAC"), thescaffold, []int{21, 27, 57}},
-		{MakeStrand("CCAA"), thescaffold, []int{8}},
-		{MakeStrand(""), MakeStrand(""), []int{}},
-		{MakeStrand("A"), MakeStrand(""), []int{}},
+		{MakeStrand("ACTA"), thescaffold, []int{-1, 0}},
+		{MakeStrand("AAC"), thescaffold, []int{-1, 21, 27, 57}},
+		{MakeStrand("CCAA"), thescaffold, []int{-1, 8}},
+		{MakeStrand(""), MakeStrand(""), []int{-1}},
+		{MakeStrand("A"), MakeStrand(""), []int{-1}},
 	}
 
 	for _, tt := range tests {
