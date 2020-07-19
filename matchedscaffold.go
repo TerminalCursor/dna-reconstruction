@@ -11,10 +11,10 @@ type MatchedScaffold struct {
 	sbinds [][]int
 }
 
-func TotalLength(s []Staple) int {
+func TotalLength(s []Strand) int {
 	totalLength := 0
-	for _,staple := range s {
-		totalLength += staple.TotalLength()
+	for _, staple := range s {
+		totalLength += staple.Length()
 	}
 	return totalLength
 }
@@ -40,11 +40,11 @@ func (matchedScaffold MatchedScaffold) MatchedString() string {
 }
 
 func (matched MatchedScaffold) Score() int {
-	score := TotalLength(matched.staples)
+	score := 0
 	for i := 0; i < len(matched.staples); i++ {
 		for idx, part := range matched.sbinds[i] {
-			if part == -1 {
-				score -= matched.staples[i].pieces[idx].Length()
+			if part != -1 {
+				score += matched.staples[i].pieces[idx].Length()
 			}
 		}
 	}
