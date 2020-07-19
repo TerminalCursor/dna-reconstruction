@@ -70,13 +70,10 @@ func main() {
 		matches := eStaple.pieces[i].Match(m13mp18)
 		strandConfs[i] = matches
 		fmt.Printf("%s %v\n", eStaple.pieces[i].Bases(), matches)
-		//for j := 0; j < len(matches); j++ {
-		//	PrintMatch(m13mp18, eStaple.pieces[i], matches[j])
-		//}
 	}
-	//fmt.Printf("%v\n", strandConfs)
+	fmt.Printf("%v\n", strandConfs)
 	possibleCombinations := GetPermutations(strandConfs, []int{}, WINDOW_SIZE)
-	//fmt.Printf("%v\n", possibleCombinations)
+	fmt.Printf("%v\n", possibleCombinations)
 	var mS []MatchedScaffold
 	for i := 0; i < len(possibleCombinations); i++ {
 		mS = append(mS, MatchedScaffold{m13mp18, eStaple, possibleCombinations[i]})
