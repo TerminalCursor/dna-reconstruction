@@ -15,3 +15,7 @@ func MakeStaple(s Strand, partition int) Staple {
 	}
 	return staple
 }
+
+func (s Staple) Length() int {
+	return len(s.pieces)
+}
