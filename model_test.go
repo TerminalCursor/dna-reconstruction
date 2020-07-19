@@ -27,7 +27,7 @@ func TestComplement(t *testing.T) {
 	}
 }
 
-func TestLength(t *testing.T) {
+func TestStrandLength(t *testing.T) {
 	var tests = []struct {
 		bases string
 		want int
