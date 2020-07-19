@@ -13,8 +13,7 @@ func PrintMatch(scaffold, staplePart Strand, offset int) {
 		if i >= offset { fmt.Printf("%c", staplePart.Bases()[i-offset])
 		} else {
 			fmt.Printf(" ")
-		}
-	}
+		} }
 	fmt.Printf("\n")
 }
 
@@ -69,6 +68,7 @@ func GetPermutations(input [][]int, prep []int, interference []int, WINDOW_SIZE 
 	return out
 }
 
+/*
 func GetStaples(input [][]Staple, prep []Staple) [][]Staple {
 	var out [][]Staple
 	if(len(input) > 1) {
@@ -90,6 +90,7 @@ func GetStaples(input [][]Staple, prep []Staple) [][]Staple {
 	}
 	return out
 }
+*/
 
 func BindingJoin(bindingSites [][]int) []int {
 	var output []int
@@ -109,7 +110,7 @@ func main() {
 	WINDOW_SIZE := 8
 	var staple_strands []Strand
 	/*
-	FILE READING
+	FILE READING - GET STAPLE STRANDS
 	*/
 	file, err := os.Open("staples.txt")
 	if err != nil {
@@ -118,6 +119,7 @@ func main() {
 
 	scanner := bufio.NewScanner(file)
 	scanner.Split(bufio.ScanLines)
+	// Each line is a staple strand
 	for scanner.Scan() {
 		staple_strands = append(staple_strands, MakeStrand(scanner.Text()))
 	}
@@ -126,6 +128,106 @@ func main() {
 	/*
 	END FILE READING
 	*/
+
+	// Generate Scaffold
+	cut_length := TotalLength(staple_strands)
+	if cut_length > m13mp18f.Length() {
+		cut_length = m13mp18f.Length()
+	}
+	m13mp18 := MakeStrand(m13mp18f.Bases()[:cut_length]).Reverse()
+
+	// Match each strand and keep highest scores
+	//var topScoredMatches []MatchedScaffold
+	var matchedScaffolds []MatchedScaffold
+	matchedScaffolds = []MatchedScaffold{MatchedScaffold{m13mp18, []Staple{}, [][]int{}}}
+	var nextMatchedScaffolds []MatchedScaffold
+	for sidx, staple_strand := range staple_strands {
+		nextMatchedScaffolds = []MatchedScaffold{}
+		fmt.Printf("Round: %d of %d\n", sidx + 1, len(staple_strands))
+		// Generate possible chunks for a given staple
+		var stapleOptions []Staple
+		if int(staple_strand.Length() / 2) >= WINDOW_SIZE {
+			for i := 0; i < WINDOW_SIZE; i++ {
+				var generated_staple_strands []Strand
+				// Get any piece of strand before the WINDOW_SIZE'd chunks
+				if i != 0 {
+					generated_staple_strands = append(generated_staple_strands, MakeStrand(staple_strand.Bases()[:i]))
+				}
+				// Get all of the WINDOW_SIZE chunks with 'i' offset
+				j := i
+				for ; j + WINDOW_SIZE <= staple_strand.Length(); j += WINDOW_SIZE {
+					generated_staple_strands = append(generated_staple_strands, MakeStrand(staple_strand.Bases()[j:j+WINDOW_SIZE]))
+				}
+				// Get any remnants
+				if (j + 1) <= staple_strand.Length() {
+					generated_staple_strands = append(generated_staple_strands, MakeStrand(staple_strand.Bases()[j:]))
+				}
+				stapleOptions = append(stapleOptions, Staple{generated_staple_strands})
+			}
+		} else {
+			fmt.Printf("Cannot generate 2 staples from given sequence at %d windowsize\n", WINDOW_SIZE)
+			os.Exit(1)
+		}
+		// Finished Generating All Possible Staple Chunks for this Staple
+		topScores := []int{0, 0, 0}
+		// Match All Possible Staple Chunks to Scaffold
+		for idx, staple := range stapleOptions {
+			fmt.Printf("Staple: %d of %d\n", idx + 1, len(stapleOptions))
+			var staplePartitionMatches [][]int
+			for i := 0; i < staple.Length(); i++ {
+				if staple.pieces[i].Length() != WINDOW_SIZE {
+					staplePartitionMatches = append(staplePartitionMatches, []int{-1})
+				} else {
+					staplePartitionMatches = append(staplePartitionMatches, staple.pieces[i].Match(m13mp18))
+				}
+				//fmt.Printf("%s %v\n", staple.pieces[i].Bases(), staplePartitionMatches[len(staplePartitionMatches)-1])
+			}
+			for _, piece := range staple.pieces {
+				fmt.Printf("%s ", piece.Bases())
+			}
+			fmt.Printf("%v\n", staplePartitionMatches)
+			var possibleCombinations [][]int
+			for _, matched := range matchedScaffolds {
+				if len(matched.staples) == 0 {
+					possibleCombinations = GetPermutations(staplePartitionMatches, []int{}, []int{}, WINDOW_SIZE)
+				} else {
+					possibleCombinations = GetPermutations(staplePartitionMatches, []int{}, BindingJoin(matched.sbinds), WINDOW_SIZE)
+				}
+				for i := 0; i < len(possibleCombinations); i++ {
+					matchedScaffold := MatchedScaffold{m13mp18, append(matched.staples, staple), append(matched.sbinds, possibleCombinations[i])}
+					if topScores[2] <= matchedScaffold.Score() {
+						nextMatchedScaffolds = append(nextMatchedScaffolds, matchedScaffold)
+					}
+					if matchedScaffold.Score() > topScores[0] {
+						topScores[2] = topScores[1]
+						topScores[1] = topScores[0]
+						topScores[0] = matchedScaffold.Score()
+					} else if matchedScaffold.Score() > topScores[1] {
+						topScores[2] = topScores[1]
+						topScores[1] = matchedScaffold.Score()
+					} else if matchedScaffold.Score() > topScores[2] {
+						topScores[2] = matchedScaffold.Score()
+					}
+				}
+			}
+		}
+		fmt.Printf("=== ROUND %d RESULTS  ===\n", sidx + 1)
+		matchedScaffolds = []MatchedScaffold{}
+		for _, ms := range nextMatchedScaffolds {
+			if ms.Score() == topScores[0] || ms.Score() == topScores[1] || ms.Score() == topScores[2] {
+				matchedScaffolds = append(matchedScaffolds, ms)
+			}
+			if ms.Score() == topScores[0] {
+				fmt.Printf("%s\n", ms.MatchedString())
+			}
+		}
+		fmt.Printf("Total Scaffolds Found: %d\n", len(matchedScaffolds))
+		fmt.Printf("=== ROUND %d FINISHED ===\n", sidx + 1)
+	}
+
+
+
+	/*
 	// Generate all possible staple subsections of WINDOWSIZE
 	var staple_options [][]Staple
 	for idx, staple_strand := range staple_strands {
@@ -187,4 +289,5 @@ func main() {
 	for _, matched := range topMatch {
 		fmt.Printf("Match Score: %d\n%s", matched.Score(), matched.MatchedString())
 	}
+	*/
 }

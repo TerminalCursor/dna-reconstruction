@@ -10,10 +10,10 @@ func TestStapleLength(t *testing.T) {
 		staple Staple
 		want int
 	}{
-		{MakeStaple(MakeStrand("ACTCTGAC"), 3), 3},
+		{MakeStaple(MakeStrand("ACTCTGAC"), 3), 2},
 		{MakeStaple(MakeStrand("ACTCTG"), 3), 2},
-		{MakeStaple(MakeStrand("ACTCTGACTG"), 3), 4},
-		{MakeStaple(MakeStrand("A"), 3), 1},
+		{MakeStaple(MakeStrand("ACTCTGACTG"), 3), 3},
+		{MakeStaple(MakeStrand("A"), 3), 0},
 		{MakeStaple(MakeStrand(""), 3), 0},
 	}
 
@@ -33,10 +33,10 @@ func TestStapleTotalLength(t *testing.T) {
 		staple Staple
 		want int
 	}{
-		{MakeStaple(MakeStrand("ACTCTGAC"), 3), 8},
+		{MakeStaple(MakeStrand("ACTCTGAC"), 3), 6},
 		{MakeStaple(MakeStrand("ACTCTG"), 3), 6},
-		{MakeStaple(MakeStrand("ACTCTGACTG"), 3), 10},
-		{MakeStaple(MakeStrand("A"), 3), 1},
+		{MakeStaple(MakeStrand("ACTCTGACTG"), 3), 9},
+		{MakeStaple(MakeStrand("A"), 3), 0},
 		{MakeStaple(MakeStrand(""), 3), 0},
 	}
 

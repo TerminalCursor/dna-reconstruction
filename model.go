@@ -57,7 +57,6 @@ func (s Strand) Bases() string {
 
 func (substrand Strand) Match(strand Strand) []int {
 	var indices []int
-	indices = append(indices, -1)
 	for i := 0; i < strand.Length() - substrand.Length() + 1; i++ {
 		for j := 0; j < substrand.Length(); j++ {
 			if strand.strand[i + j] != substrand.strand[j].Complement() {
@@ -67,6 +66,9 @@ func (substrand Strand) Match(strand Strand) []int {
 				indices = append(indices, i)
 			}
 		}
+	}
+	if len(indices) == 0 {
+		indices = append(indices, -1)
 	}
 	return indices
 }
