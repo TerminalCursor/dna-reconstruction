@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	"log"
+	"bufio"
 	"os"
 )
 
@@ -104,11 +106,26 @@ func BindingJoin(bindingSites [][]int) []int {
 func main() {
 	fmt.Printf("\033[91mDNA\033[0m \033[94mReconstruction\033[0m \033[33mv00.01\033[0m\n")
 	/* MULTI STAPLES */
-	WINDOW_SIZE := 8
-	staple_strands := []Strand{
-		MakeStrand("TGGACTCC AACGTCAA CCACTATT AAAGAACG"),
-		MakeStrand("GTTCCAGT TTGGAACA AGAGTAGG GCGAAAAA CCGTCTAT CA"),
+	WINDOW_SIZE := 6
+	var staple_strands []Strand
+	/*
+	FILE READING
+	*/
+	file, err := os.Open("staples.txt")
+	if err != nil {
+		log.Fatalf("Failed opening file: %s\n", err)
 	}
+
+	scanner := bufio.NewScanner(file)
+	scanner.Split(bufio.ScanLines)
+	for scanner.Scan() {
+		staple_strands = append(staple_strands, MakeStrand(scanner.Text()))
+	}
+
+	file.Close()
+	/*
+	END FILE READING
+	*/
 	// Generate all possible staple subsections of WINDOWSIZE
 	var staple_options [][]Staple
 	for idx, staple_strand := range staple_strands {
@@ -122,7 +139,11 @@ func main() {
 			os.Exit(1)
 		}
 	}
-	m13mp18 := MakeStrand(m13mp18f.Bases()[:TotalLength(staple_strands)]).Reverse()
+	cut_length := TotalLength(staple_strands)
+	if cut_length > m13mp18f.Length() {
+		cut_length = m13mp18f.Length()
+	}
+	m13mp18 := MakeStrand(m13mp18f.Bases()[:cut_length]).Reverse()
 	var topMatch []MatchedScaffold
 	for _, staples := range GetStaples(staple_options, []Staple{}) {
 		var matchedScaffolds []MatchedScaffold = []MatchedScaffold{MatchedScaffold{m13mp18, []Staple{}, [][]int{}}}
