@@ -4,11 +4,19 @@ import (
 	"fmt"
 )
 
-/* TODO: Future version to include multiple staples
+// Future version to include multiple staples
 type MatchedScaffold struct {
 	scaffold Strand
 	staples []Staple
 	sbinds [][]int
+}
+
+func TotalLength(s []Staple) int {
+	totalLength := 0
+	for _,staple := range s {
+		totalLength += staple.TotalLength()
+	}
+	return totalLength
 }
 
 func (matchedScaffold MatchedScaffold) MatchedString() string {
@@ -18,7 +26,7 @@ func (matchedScaffold MatchedScaffold) MatchedString() string {
 		for j := 0; j < len(matchedScaffold.staples); j++ {
 			for k := 0; k < matchedScaffold.staples[j].Length(); k++ {
 				if matchedScaffold.sbinds[j][k] <= i && i < (matchedScaffold.sbinds[j][k] + matchedScaffold.staples[j].pieces[k].Length()) && matchedScaffold.sbinds[j][k] != -1 {
-					outputString += fmt.Sprintf("%c", matchedScaffold.staples[j].pieces[k].Bases()[i-matchedScaffold.sbinds[j][k])
+					outputString += fmt.Sprintf("%c", matchedScaffold.staples[j].pieces[k].Bases()[i-matchedScaffold.sbinds[j][k]])
 					didPrint = true
 				}
 			}
@@ -30,9 +38,21 @@ func (matchedScaffold MatchedScaffold) MatchedString() string {
 	outputString += "\n"
 	return outputString
 }
-*/
+
+func (matched MatchedScaffold) Score() int {
+	score := TotalLength(matched.staples)
+	for i := 0; i < len(matched.staples); i++ {
+		for idx, part := range matched.sbinds[i] {
+			if part == -1 {
+				score -= matched.staples[i].pieces[idx].Length()
+			}
+		}
+	}
+	return score
+}
 
 /* OLD 2.0 VERSION */
+/*
 type MatchedScaffold struct {
 	scaffold Strand
 	staple Staple
@@ -56,6 +76,7 @@ func (matchedScaffold MatchedScaffold) MatchedString() string {
 	outputString += "\n"
 	return outputString
 }
+*/
 
 /* OLD VERSION
 type MatchedScaffold struct {

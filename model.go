@@ -70,3 +70,11 @@ func (substrand Strand) Match(strand Strand) []int {
 	}
 	return indices
 }
+
+func (strand Strand) Reverse() Strand {
+	revStr := ""
+	for _, val := range strand.Bases() {
+		revStr = string(val) + revStr
+	}
+	return MakeStrand(revStr)
+}
