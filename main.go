@@ -165,7 +165,7 @@ func main() {
 			fmt.Printf("%v\n", staplePartitionMatches)
 			var possibleCombinations [][]int
 			for ijk, matched := range matchedScaffolds {
-				nextMatchedScaffolds = append(nextMatchedScaffolds, matched)
+				//nextMatchedScaffolds = append(nextMatchedScaffolds, matched)
 				if len(matched.staples) == 0 {
 					possibleCombinations = GetPermutations(staplePartitionMatches, []int{}, []int{}, WINDOW_SIZE)
 				} else {
@@ -186,7 +186,8 @@ func main() {
 					} else if matchedScaffold.Score() > topScores[2] {
 						topScores[2] = matchedScaffold.Score()
 					}
-					if ijk % 100 == 0 || len(nextMatchedScaffolds) > 3500 {
+					if ijk % 100 == 0 {
+					//if ijk % 100 == 0 || len(nextMatchedScaffolds) > 3500 {
 						// Sort by score (highest to lowest)
 						sort.Slice(nextMatchedScaffolds, func(i, j int) bool {
 							return nextMatchedScaffolds[i].Score() >= nextMatchedScaffolds[j].Score()
@@ -202,16 +203,20 @@ func main() {
 			}
 		}
 		fmt.Printf("=== ROUND %d RESULTS  ===\n", sidx + 1)
-		matchedScaffolds = []MatchedScaffold{}
-		for _, ms := range nextMatchedScaffolds {
-			if ms.Score() == topScores[0] || ms.Score() == topScores[1] || ms.Score() == topScores[2] {
-				matchedScaffolds = append(matchedScaffolds, ms)
+		if len(nextMatchedScaffolds) != 0 {
+			matchedScaffolds = []MatchedScaffold{}
+			for _, ms := range nextMatchedScaffolds {
+				if ms.Score() == topScores[0] || ms.Score() == topScores[1] || ms.Score() == topScores[2] {
+					matchedScaffolds = append(matchedScaffolds, ms)
+				}
+			//	if ms.Score() == topScores[0] {
+			//		fmt.Printf("%s\n", ms.MatchedString())
+			//	}
 			}
-		//	if ms.Score() == topScores[0] {
-		//		fmt.Printf("%s\n", ms.MatchedString())
-		//	}
+			fmt.Printf("Total Scaffolds Found: %d\n", len(matchedScaffolds))
+		} else {
+			fmt.Printf("No New Scaffolds Found for this Staple")
 		}
-		fmt.Printf("Total Scaffolds Found: %d\n", len(matchedScaffolds))
 		fmt.Printf("=== ROUND %d FINISHED ===\n", sidx + 1)
 	}
 }
