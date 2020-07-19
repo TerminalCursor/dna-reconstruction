@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"os"
 )
 
 func PrintMatch(scaffold, staplePart Strand, offset int) {
@@ -35,11 +36,10 @@ func GetPermutations(input [][]int, prep []int, WINDOW_SIZE int) [][]int {
 					}
 				}
 			}
-		} else {
-			perms := GetPermutations(input[1:], append(prep, -1), WINDOW_SIZE)
-			for j := 0; j < len(perms); j++ {
-				out = append(out, perms[j])
-			}
+		}
+		else {
+			fmt.Printf("EMPTY MATCH DETECTED\nTRIVIAL MATCH '-1' NOT INCLUDED\n")
+			os.Exit(1)
 		}
 	} else {
 		for i := 0; i < len(input[0]); i++ {
@@ -62,9 +62,10 @@ func GetPermutations(input [][]int, prep []int, WINDOW_SIZE int) [][]int {
 
 func main() {
 	fmt.Printf("\033[91mDNA\033[0m \033[94mReconstruction\033[0m \033[33mv00.01\033[0m\n")
-	m13mp18 := MakeStrand("TGAT AGAC GGTT TTTC GCCC TTTG ACGT TGGA GTCC ACGT TCTT TAAT AGTG GACT CTTG")
+	//m13mp18 := MakeStrand("TGAT AGAC GGTT TTTC GCCC TTTG ACGT TGGA GTCC ACGT TCTT TAAT AGTG GACT CTTG")
 	WINDOW_SIZE := 3
-	eStaple := MakeStaple(MakeStrand("ACTCTGAC"), WINDOW_SIZE)
+	eStaple := MakeStaple(MakeStrand("ACTATCTG"), WINDOW_SIZE)
+	m13mp18 := MakeStrand(m13mp18f.Bases()[:eStaple.TotalLength()])
 	strandConfs := make([][]int, eStaple.Length())
 	for i := 0; i < eStaple.Length(); i++ {
 		matches := eStaple.pieces[i].Match(m13mp18)
