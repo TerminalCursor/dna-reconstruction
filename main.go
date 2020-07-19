@@ -36,8 +36,7 @@ func GetPermutations(input [][]int, prep []int, WINDOW_SIZE int) [][]int {
 					}
 				}
 			}
-		}
-		else {
+		} else {
 			fmt.Printf("EMPTY MATCH DETECTED\nTRIVIAL MATCH '-1' NOT INCLUDED\n")
 			os.Exit(1)
 		}
