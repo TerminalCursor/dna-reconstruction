@@ -10,6 +10,7 @@ type Scaffold struct {
 	bonds [][]int
 }
 
+// Get a pretty-print output of Scaffold and the bonded staples
 func (s Scaffold) MatchString() string {
 	out := s.scaffold.Bases() + "\n"
 	for i := 0; i < s.scaffold.Length(); i++ {
@@ -30,6 +31,7 @@ func (s Scaffold) MatchString() string {
 	return out
 }
 
+// Find all of the binding sites on the scaffold for a strand
 func (sc Scaffold) MatchStrand(s Strand) []int {
 	var bondSites []int
 	for i := 0; i < sc.scaffold.Length() - s.Length() + 1; i++ {
@@ -63,6 +65,7 @@ func (sc Scaffold) MatchStrand(s Strand) []int {
 	return bondSites
 }
 
+// Check if bonding site is in list of valid bonding sites
 func InIntList(val int, list []int) bool {
 	isIn := false
 	for _, i := range list {
@@ -73,6 +76,7 @@ func InIntList(val int, list []int) bool {
 	return isIn
 }
 
+// Bond a staple to the scaffold, only if it will not collide with existing bonds
 func (sc Scaffold) BondStaple(strands []Strand, bonds []int) Scaffold {
 	isValid := true
 	for sidx, strand := range strands {
