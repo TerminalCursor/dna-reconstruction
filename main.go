@@ -8,18 +8,6 @@ import (
 	"sort"
 )
 
-/*
-func PrintMatch(scaffold, staplePart Strand, offset int) {
-	fmt.Printf("%s\n", scaffold.Bases())
-	for i := 0; i < offset + staplePart.Length(); i++ {
-		if i >= offset { fmt.Printf("%c", staplePart.Bases()[i-offset])
-		} else {
-			fmt.Printf(" ")
-		} }
-	fmt.Printf("\n")
-}
-*/
-
 func GetPermutations(input [][]int, prep []int, interference []int, WINDOW_SIZE int) [][]int {
 	var out [][]int
 	if(len(input) > 1) {
@@ -193,8 +181,7 @@ func main() {
 						sort.Slice(nextMatchedScaffolds, func(i, j int) bool {
 							return nextMatchedScaffolds[i].Score() >= nextMatchedScaffolds[j].Score()
 						})
-						//MAX := 3000
-						MAX := 50
+						MAX := 1500
 						if len(nextMatchedScaffolds) < MAX {
 							MAX = len(nextMatchedScaffolds)
 						}
@@ -218,8 +205,7 @@ func main() {
 			sort.Slice(matchedScaffolds, func(i, j int) bool {
 				return matchedScaffolds[i].Score() >= matchedScaffolds[j].Score()
 			})
-			//MAX := 1000
-			MAX := 50
+			MAX := 1000
 			if len(matchedScaffolds) < MAX {
 				MAX = len(matchedScaffolds)
 			}
@@ -234,6 +220,7 @@ func main() {
 	for idx, ms := range matchedScaffolds {
 		if idx < 10 {
 			fmt.Printf("%s", ms.MatchedString())
+			fmt.Printf("%d\n", ms.Score())
 		}
 	}
 }

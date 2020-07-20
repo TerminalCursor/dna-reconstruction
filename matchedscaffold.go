@@ -4,13 +4,15 @@ import (
 	"fmt"
 )
 
-// Future version to include multiple staples
+// Matched Scaffolding
+// Datastructure that holds all of the staples as well as the binding index for the staple partition
 type MatchedScaffold struct {
 	scaffold Strand
 	staples []Staple
 	sbinds [][]int
 }
 
+// Get the overall length of a list of strands
 func TotalLength(s []Strand) int {
 	totalLength := 0
 	for _, staple := range s {
@@ -19,6 +21,7 @@ func TotalLength(s []Strand) int {
 	return totalLength
 }
 
+// Pretty Print Scaffolding with Bindings
 func (matchedScaffold MatchedScaffold) MatchedString() string {
 	outputString := fmt.Sprintf("%s\n", matchedScaffold.scaffold.Bases())
 	for i:= 0; i < matchedScaffold.scaffold.Length(); i++ {
@@ -39,6 +42,7 @@ func (matchedScaffold MatchedScaffold) MatchedString() string {
 	return outputString
 }
 
+// Score each bound staple strand
 func (matched MatchedScaffold) Score() int {
 	score := 0
 	for i := 0; i < len(matched.staples); i++ {
@@ -50,62 +54,3 @@ func (matched MatchedScaffold) Score() int {
 	}
 	return score
 }
-
-/* OLD 2.0 VERSION */
-/*
-type MatchedScaffold struct {
-	scaffold Strand
-	staple Staple
-	binds []int
-}
-
-func (matchedScaffold MatchedScaffold) MatchedString() string {
-	outputString := fmt.Sprintf("%s\n", matchedScaffold.scaffold.Bases())
-	for i:= 0; i < matchedScaffold.scaffold.Length(); i++ {
-		didPrint := false
-		for j := 0; j < matchedScaffold.staple.Length(); j++ {
-			if matchedScaffold.binds[j] <= i && i < (matchedScaffold.binds[j] + matchedScaffold.staple.pieces[j].Length())  && !didPrint && matchedScaffold.binds[j] != -1{
-				outputString += fmt.Sprintf("%c", matchedScaffold.staple.pieces[j].Bases()[i-matchedScaffold.binds[j]])
-				didPrint = true
-			}
-		}
-		if !didPrint {
-			outputString += fmt.Sprintf(" ")
-		}
-	}
-	outputString += "\n"
-	return outputString
-}
-*/
-
-/* OLD VERSION
-type MatchedScaffold struct {
-	scaffold Strand
-	staple Staple
-	binds []int
-}
-
-func MakeMatchedScaffold(scaff Strand, staple Staple, bindingPoints []int) {
-	var ms MatchedScaffold
-	ms.scaffold = scaff
-	ms.staple = staple
-	ms.binds = bindingPoints
-}
-
-func (matchedScaffold MatchedScaffold) PrintMatched() {
-	fmt.Printf("%s\n", matchedScaffold.scaffold.Bases())
-	for i:= 0; i < matchedScaffold.scaffold.Length(); i++ {
-		didPrint := false
-		for j := 0; j < matchedScaffold.staple.Length(); j++ {
-			if matchedScaffold.binds[j] <= i && i < (matchedScaffold.binds[j] + matchedScaffold.staple.pieces[j].Length())  && !didPrint && matchedScaffold.binds[j] != -1{
-				fmt.Printf("%c", matchedScaffold.staple.pieces[j].Bases()[i-matchedScaffold.binds[j]])
-				didPrint = true
-			}
-		}
-		if !didPrint {
-			fmt.Printf(" ")
-		}
-	}
-	fmt.Println()
-}
-*/

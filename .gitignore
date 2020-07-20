@@ -5,6 +5,7 @@
 *.so
 *.dylib
 dna-reconstruction
+old/
 
 # Test binary, built with `go test -c`
 *.test
