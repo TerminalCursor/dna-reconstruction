@@ -31,14 +31,10 @@ func main() {
 			},
 		},
 	}
-	fmt.Printf("%s\n", scaffold.scaffold.Bases())
-	for sidx, staple := range scaffold.staples {
-		for idx, strand := range staple {
-			fmt.Printf("%v %s\n", scaffold.bonds[sidx][idx], strand.Bases())
-		}
-	}
+
 	fmt.Printf("%s", scaffold.MatchString())
-	scaffold = scaffold.BondStaple([]Strand{MakeStrand("ACGT"),}, []int{8,})
+	fmt.Printf("%v\n", scaffold.MatchStrand(MakeStrand("GT")))
+	scaffold = scaffold.BondStaple([]Strand{MakeStrand("AC"),MakeStrand("GT")}, []int{8,10,})
 	fmt.Printf("%s", scaffold.MatchString())
 	fmt.Printf("%v\n", scaffold.MatchStrand(MakeStrand("GT")))
 }
