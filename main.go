@@ -8,6 +8,7 @@ import (
 	"sort"
 )
 
+/*
 func PrintMatch(scaffold, staplePart Strand, offset int) {
 	fmt.Printf("%s\n", scaffold.Bases())
 	for i := 0; i < offset + staplePart.Length(); i++ {
@@ -17,6 +18,7 @@ func PrintMatch(scaffold, staplePart Strand, offset int) {
 		} }
 	fmt.Printf("\n")
 }
+*/
 
 func GetPermutations(input [][]int, prep []int, interference []int, WINDOW_SIZE int) [][]int {
 	var out [][]int
@@ -82,7 +84,7 @@ func BindingJoin(bindingSites [][]int) []int {
 /* https://en.wikipedia.org/wiki/ANSI_escape_code */
 
 func main() {
-	fmt.Printf("\033[91mDNA\033[0m \033[94mReconstruction\033[0m \033[33mv00.01\033[0m\n")
+	fmt.Printf("\033[91mDNA\033[0m \033[94mReconstruction\033[0m \033[33mv00.02\033[0m\n")
 	/* MULTI STAPLES */
 	WINDOW_SIZE := 6
 	var staple_strands []Strand
@@ -157,12 +159,11 @@ func main() {
 				} else {
 					staplePartitionMatches = append(staplePartitionMatches, staple.pieces[i].Match(m13mp18))
 				}
-				//fmt.Printf("%s %v\n", staple.pieces[i].Bases(), staplePartitionMatches[len(staplePartitionMatches)-1])
 			}
-			for _, piece := range staple.pieces {
-				fmt.Printf("%s ", piece.Bases())
-			}
-			fmt.Printf("%v\n", staplePartitionMatches)
+			//for _, piece := range staple.pieces {
+			//	fmt.Printf("%s ", piece.Bases())
+			//}
+			//fmt.Printf("%v\n", staplePartitionMatches)
 			var possibleCombinations [][]int
 			for ijk, matched := range matchedScaffolds {
 				//nextMatchedScaffolds = append(nextMatchedScaffolds, matched)
@@ -192,7 +193,8 @@ func main() {
 						sort.Slice(nextMatchedScaffolds, func(i, j int) bool {
 							return nextMatchedScaffolds[i].Score() >= nextMatchedScaffolds[j].Score()
 						})
-						MAX := 3000
+						//MAX := 3000
+						MAX := 50
 						if len(nextMatchedScaffolds) < MAX {
 							MAX = len(nextMatchedScaffolds)
 						}
@@ -204,7 +206,7 @@ func main() {
 		}
 		fmt.Printf("=== ROUND %d RESULTS  ===\n", sidx + 1)
 		if len(nextMatchedScaffolds) != 0 {
-			matchedScaffolds = []MatchedScaffold{}
+			//matchedScaffolds = []MatchedScaffold{}
 			for _, ms := range nextMatchedScaffolds {
 				if ms.Score() == topScores[0] || ms.Score() == topScores[1] || ms.Score() == topScores[2] {
 					matchedScaffolds = append(matchedScaffolds, ms)
@@ -213,10 +215,25 @@ func main() {
 			//		fmt.Printf("%s\n", ms.MatchedString())
 			//	}
 			}
+			sort.Slice(matchedScaffolds, func(i, j int) bool {
+				return matchedScaffolds[i].Score() >= matchedScaffolds[j].Score()
+			})
+			//MAX := 1000
+			MAX := 50
+			if len(matchedScaffolds) < MAX {
+				MAX = len(matchedScaffolds)
+			}
+			matchedScaffolds = matchedScaffolds[:MAX]
 			fmt.Printf("Total Scaffolds Found: %d\n", len(matchedScaffolds))
 		} else {
-			fmt.Printf("No New Scaffolds Found for this Staple")
+			fmt.Printf("Total Scaffolds: %d\n", len(matchedScaffolds))
+			fmt.Printf("No New Scaffolds Found for this Staple\n")
 		}
 		fmt.Printf("=== ROUND %d FINISHED ===\n", sidx + 1)
+	}
+	for idx, ms := range matchedScaffolds {
+		if idx < 10 {
+			fmt.Printf("%s", ms.MatchedString())
+		}
 	}
 }
