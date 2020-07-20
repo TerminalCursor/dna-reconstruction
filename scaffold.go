@@ -51,9 +51,9 @@ func (sc Scaffold) MatchStrand(s Strand) []int {
 						}
 					}()
 				}
+				// Wait for all partial staple strand thread checks to come back
+				wg.Wait()
 			}
-			// Wait for all staple thread checks to come back
-			wg.Wait()
 			// If nothing is bonded, add that as an available bond site
 			if available {
 				bondSites = append(bondSites, i)
@@ -61,4 +61,27 @@ func (sc Scaffold) MatchStrand(s Strand) []int {
 		}
 	}
 	return bondSites
+}
+
+func In(val int, list []int) bool {
+	isIn := false
+	for _, i := range list {
+		if val == i {
+			isIn = true
+		}
+	}
+	return isIn
+}
+
+func (sc Scaffold) BondStaple(strands []Strand, bonds []int) Scaffold {
+	isValid := true
+	for sidx, strand := range strands {
+		validBonds := sc.MatchStrand(strand)
+		isValid = isValid && In(bonds[sidx], validBonds)
+	}
+	if isValid {
+		sc.staples = append(sc.staples, strands)
+		sc.bonds = append(sc.bonds, bonds)
+	}
+	return sc
 }
