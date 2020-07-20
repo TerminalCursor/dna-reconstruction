@@ -33,6 +33,9 @@ func (s Scaffold) MatchString() string {
 
 // Find all of the binding sites on the scaffold for a strand
 func (sc Scaffold) MatchStrand(s Strand) []int {
+	if s.Length() == 0 {
+		return []int{}
+	}
 	var bondSites []int
 	for i := 0; i < sc.scaffold.Length() - s.Length() + 1; i++ {
 		// Check to see if the strand can bond at every available position on the strand

@@ -7,7 +7,7 @@ import (
 func main() {
 	fmt.Printf("\033[1;1H\033[2J\033[91mDNA\033[0m \033[94mReconstruction\033[0m \033[33mv00.03\033[0m\n")
 	// Nucleotide Length for Staple Partitions
-	NUCLEOTIDE_LENGTH := 6
+	//NUCLEOTIDE_LENGTH := 6
 	var staple_strands []Strand
 
 	// Get Staple Strands from staples.txt
