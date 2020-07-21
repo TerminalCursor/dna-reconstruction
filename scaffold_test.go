@@ -26,6 +26,7 @@ func TestMatchStrand(t *testing.T) {
 		{Scaffold{MakeStrand("ACTGTGAC"),[][]Strand{},[][]int{}}, MakeStrand("TG"), []int{0, 6,}},
 		{Scaffold{MakeStrand("ACTGTGAC"),[][]Strand{[]Strand{MakeStrand("TG"),},},[][]int{[]int{6,}}}, MakeStrand("TG"), []int{0,}},
 		{Scaffold{MakeStrand("ACTGTGAC"),[][]Strand{[]Strand{MakeStrand("TG"),},},[][]int{[]int{0,}}}, MakeStrand("CTG"), []int{5,}},
+		{Scaffold{MakeStrand("ACTGTGAC"),[][]Strand{[]Strand{MakeStrand("TG"),},},[][]int{[]int{-1,}}}, MakeStrand("TG"), []int{0, 6,}},
 		{Scaffold{MakeStrand("ACTGTGAC"),[][]Strand{},[][]int{}}, MakeStrand("AC"), []int{2, 4,}},
 		{Scaffold{MakeStrand("ACTGTGAC"),[][]Strand{},[][]int{}}, MakeStrand(""), []int{}},
 	}

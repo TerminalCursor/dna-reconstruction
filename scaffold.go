@@ -17,7 +17,7 @@ func (s Scaffold) MatchString() string {
 		test := false
 		for sidx, staple := range s.staples {
 			for idx, strand := range staple {
-				if s.bonds[sidx][idx] <= i && i < s.bonds[sidx][idx] + strand.Length() {
+				if s.bonds[sidx][idx] <= i && i < s.bonds[sidx][idx] + strand.Length() && s.bonds[sidx][idx] != -1 {
 					out += string(strand.Bases()[i - s.bonds[sidx][idx]])
 					test = true
 				}
@@ -49,9 +49,11 @@ func (sc Scaffold) MatchStrand(s Strand) []int {
 					// Check each staple on its own thread
 					go func() {
 						defer wg.Done()
-						for j := bint; j < bint + sc.staples[sidx][idx].Length(); j ++ {
-							if i <= j && j < i + s.Length() {
-								available = false
+						if sc.bonds[sidx][idx] != -1 {
+							for j := bint; j < bint + sc.staples[sidx][idx].Length(); j ++ {
+								if i <= j && j < i + s.Length() {
+									available = false
+								}
 							}
 						}
 					}()
