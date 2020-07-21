@@ -17,27 +17,6 @@ func CompareStrand(s1, s2 Strand) bool {
 	return false
 }
 
-func TestStrandComplement(t *testing.T) {
-	var tests = []struct {
-		s Strand
-		want Strand
-	}{
-		{MakeStrand("ACTG"), MakeStrand("TGAC")},
-		{MakeStrand("TCGA"), MakeStrand("AGCT")},
-		{MakeStrand("T G G A C"), MakeStrand("ACCTG")},
-		{MakeStrand(""), MakeStrand("")},
-	}
-	for _, tt := range tests {
-		testname := fmt.Sprintf("%s", tt.s.Bases())
-		t.Run(testname, func(t *testing.T) {
-			ans := tt.s.Complement()
-			if !CompareStrand(ans, tt.want) {
-				t.Errorf("got `%s`, want `%s`", ans.Bases(), tt.want.Bases())
-			}
-		})
-	}
-}
-
 func TestBases(t *testing.T) {
 	var tests = []struct {
 		s Strand
@@ -54,6 +33,27 @@ func TestBases(t *testing.T) {
 			ans := tt.s.Bases()
 			if ans != tt.want {
 				t.Errorf("got `%s`, want `%s`", ans, tt.want)
+			}
+		})
+	}
+}
+
+func TestStrandComplement(t *testing.T) {
+	var tests = []struct {
+		s Strand
+		want Strand
+	}{
+		{MakeStrand("ACTG"), MakeStrand("TGAC")},
+		{MakeStrand("TCGA"), MakeStrand("AGCT")},
+		{MakeStrand("T G G A C"), MakeStrand("ACCTG")},
+		{MakeStrand(""), MakeStrand("")},
+	}
+	for _, tt := range tests {
+		testname := fmt.Sprintf("%s", tt.s.Bases())
+		t.Run(testname, func(t *testing.T) {
+			ans := tt.s.Complement()
+			if !CompareStrand(ans, tt.want) {
+				t.Errorf("got `%s`, want `%s`", ans.Bases(), tt.want.Bases())
 			}
 		})
 	}
