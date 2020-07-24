@@ -16,25 +16,26 @@ func main() {
 		fmt.Printf("%s\n", staple_strands[len(staple_strands)-1].Bases())
 	}
 
-	scaffold := Scaffold{
-		MakeStrand("AGTCGTCATGCA"),
+	//TGATAGACGGTTTTTCGCCC
+	m13mp18 := Scaffold{
+		MakeStrand(m13mp18f.Bases()[:20]),
 		[][]Strand{
-			[]Strand{
-				MakeStrand("TCAG"),
-				MakeStrand("CAGT"),
-			},
+//			[]Strand{
+//				MakeStrand("TCAG"),
+//				MakeStrand("CAGT"),
+//			},
 		},
 		[][]int{
-			[]int{
-				0,
-				-1,
-			},
+//			[]int{
+//				0,
+//				-1,
+//			},
 		},
 	}
 
-	fmt.Printf("%s", scaffold.MatchString())
-	fmt.Printf("%v\n", scaffold.MatchStrand(MakeStrand("GT")))
-	scaffold = scaffold.BondStaple([]Strand{MakeStrand("AC"),MakeStrand("GT")}, []int{8,10,})
-	fmt.Printf("%s", scaffold.MatchString())
-	fmt.Printf("%v\n", scaffold.MatchStrand(MakeStrand("GT")))
+	fmt.Printf("%s", m13mp18.MatchString())
+	fmt.Printf("%v\n", m13mp18.MatchStrand(MakeStrand("ACTA")))
+	m13mp18 = m13mp18.BondStaple([]Strand{MakeStrand("CCAA"),MakeStrand("AAAG")}, []int{8,12,})
+	fmt.Printf("%s", m13mp18.MatchString())
+	fmt.Printf("%v\n", m13mp18.MatchStrand(MakeStrand("GG")))
 }
