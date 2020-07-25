@@ -9,16 +9,22 @@ func main() {
 	// Nucleotide Length for Staple Partitions
 	//NUCLEOTIDE_LENGTH := 6
 	var staple_strands []Strand
+	scaffold_length := 0
 
 	// Get Staple Strands from staples.txt
 	for _, s := range ReadLines("sample/staples.txt") {
 		staple_strands = append(staple_strands, MakeStrand(s))
+		scaffold_length += len(s)
 		fmt.Printf("%s\n", staple_strands[len(staple_strands)-1].Bases())
+	}
+
+	if scaffold_length > len(m13mp18f.Bases()) {
+		scaffold_length = len(m13mp18f.Bases())
 	}
 
 	//TGATAGACGGTTTTTCGCCC
 	m13mp18 := Scaffold{
-		MakeStrand(m13mp18f.Bases()[:20]),
+		MakeStrand(m13mp18f.Bases()[:scaffold_length]),
 		[][]Strand{
 //			[]Strand{
 //				MakeStrand("TCAG"),
