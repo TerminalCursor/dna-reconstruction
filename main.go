@@ -47,8 +47,8 @@ func main() {
 			if len(m13mp18.MatchStrand(SubStrand)) > 0 {
 				matchPosition := m13mp18.MatchStrand(SubStrand)[0]
 				m13mp18 = m13mp18.BondStaple([]Strand{SubStrand}, []int{matchPosition,})
-				fmt.Printf("%s", m13mp18.MatchString())
 			}
+			fmt.Printf("%s", m13mp18.MatchString())
 		}
 	}
 }
