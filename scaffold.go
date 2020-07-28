@@ -86,7 +86,7 @@ func (sc Scaffold) BondStaple(strands []Strand, bonds []int) Scaffold {
 	isValid := true
 	for sidx, strand := range strands {
 		validBonds := sc.MatchStrand(strand)
-		isValid = isValid && InIntList(bonds[sidx], validBonds)
+		isValid = isValid && (InIntList(bonds[sidx], validBonds) || bonds[sidx] == -1)
 	}
 	if isValid {
 		sc.staples = append(sc.staples, strands)

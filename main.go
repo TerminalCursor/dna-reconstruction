@@ -22,8 +22,12 @@ func main() {
 	// Get Staple Strands from staples.txt
 	for _, s := range ReadLines("sample/staples.txt") {
 		staple_strands = append(staple_strands, MakeStrand(s))
-		scaffold_length += len(s)
 		fmt.Printf("%s\n", staple_strands[len(staple_strands)-1].Bases())
+	}
+
+	// Get scaffold length
+	for _, s := range staple_strands {
+		scaffold_length += s.Length()
 	}
 
 	// Make sure that we don't go beyond the end of the strand
@@ -47,6 +51,8 @@ func main() {
 			if len(m13mp18.MatchStrand(SubStrand)) > 0 {
 				matchPosition := m13mp18.MatchStrand(SubStrand)[0]
 				m13mp18 = m13mp18.BondStaple([]Strand{SubStrand}, []int{matchPosition,})
+			} else {
+				m13mp18 = m13mp18.BondStaple([]Strand{SubStrand}, []int{-1,})
 			}
 			fmt.Printf("%s", m13mp18.MatchString())
 		}
@@ -61,4 +67,5 @@ func main() {
 			fmt.Printf("%s", m13mp18.MatchString())
 		}
 	}
+	fmt.Printf("%v\n", m13mp18)
 }
