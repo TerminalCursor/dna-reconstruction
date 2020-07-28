@@ -39,12 +39,14 @@ func main() {
 	}
 
 	// Match substrands from staple strands
-	for i := 0; i < staple_strands[0].Length()/NUCLEOTIDE_LENGTH; i++ {
-		SubStrand := MakeStrand(staple_strands[0].Bases()[(i) * NUCLEOTIDE_LENGTH:(i+1) * NUCLEOTIDE_LENGTH])
-		fmt.Printf("\n%s\n", SubStrand.Bases())
-		fmt.Printf("%v\n", m13mp18.MatchStrand(SubStrand))
-		matchPosition := m13mp18.MatchStrand(SubStrand)[0]
-		m13mp18 = m13mp18.BondStaple([]Strand{SubStrand}, []int{matchPosition,})
-		fmt.Printf("%s", m13mp18.MatchString())
+	for j := 0; j < len(staple_strands); j++ {
+		for i := 0; i < staple_strands[j].Length()/NUCLEOTIDE_LENGTH; i++ {
+			SubStrand := MakeStrand(staple_strands[j].Bases()[(i) * NUCLEOTIDE_LENGTH:(i+1) * NUCLEOTIDE_LENGTH])
+			fmt.Printf("\n%s\n", SubStrand.Bases())
+			fmt.Printf("%v\n", m13mp18.MatchStrand(SubStrand))
+			matchPosition := m13mp18.MatchStrand(SubStrand)[0]
+			m13mp18 = m13mp18.BondStaple([]Strand{SubStrand}, []int{matchPosition,})
+			fmt.Printf("%s", m13mp18.MatchString())
+		}
 	}
 }
