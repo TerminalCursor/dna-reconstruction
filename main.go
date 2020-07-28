@@ -50,5 +50,15 @@ func main() {
 			}
 			fmt.Printf("%s", m13mp18.MatchString())
 		}
+		if staple_strands[j].Length() % NUCLEOTIDE_LENGTH != 0 {
+			SubStrand := MakeStrand(staple_strands[j].Bases()[int(staple_strands[j].Length()/NUCLEOTIDE_LENGTH)*NUCLEOTIDE_LENGTH:])
+			fmt.Printf("\n%s\n", SubStrand.Bases())
+			fmt.Printf("%v\n", m13mp18.MatchStrand(SubStrand))
+			if len(m13mp18.MatchStrand(SubStrand)) > 0 {
+				matchPosition := m13mp18.MatchStrand(SubStrand)[0]
+				m13mp18 = m13mp18.BondStaple([]Strand{SubStrand}, []int{matchPosition,})
+			}
+			fmt.Printf("%s", m13mp18.MatchString())
+		}
 	}
 }
