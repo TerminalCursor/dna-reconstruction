@@ -49,6 +49,7 @@ func main() {
 			fmt.Printf("\n%s\n", SubStrand.Bases())
 			fmt.Printf("%v\n", m13mp18.MatchStrand(SubStrand))
 			if len(m13mp18.MatchStrand(SubStrand)) > 0 {
+				// Only use the first match of all of the matches
 				matchPosition := m13mp18.MatchStrand(SubStrand)[0]
 				m13mp18 = m13mp18.BondStaple([]Strand{SubStrand}, []int{matchPosition,})
 			} else {
