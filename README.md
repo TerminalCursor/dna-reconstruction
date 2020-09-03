@@ -9,3 +9,4 @@ go test -v && go build && ./dna-reconstruction
 # TODO
 1. Add more tests
 2. Break methods in main file to their own files
+3. Match staples from largest to smallest

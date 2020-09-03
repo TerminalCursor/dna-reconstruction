@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"sort"
 )
 
 func ReverseString(str string) string {
@@ -24,6 +25,10 @@ func main() {
 		staple_strands = append(staple_strands, MakeStrand(s))
 		fmt.Printf("%s\n", staple_strands[len(staple_strands)-1].Bases())
 	}
+
+	sort.Slice(staple_strands[:], func(i, j int) bool {
+		return staples_strands[i].Length() < staples_strands[j].Length()
+	})
 
 	// Get scaffold length
 	for _, s := range staple_strands {
