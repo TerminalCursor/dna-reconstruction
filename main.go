@@ -27,7 +27,7 @@ func main() {
 	}
 
 	sort.Slice(staple_strands[:], func(i, j int) bool {
-		return staple_strands[i].Length() > staple_strands[j].Length()
+		return staple_strands[i].Length() < staple_strands[j].Length()
 	})
 
 	// Get scaffold length
