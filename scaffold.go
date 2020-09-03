@@ -94,3 +94,15 @@ func (sc Scaffold) BondStaple(strands []Strand, bonds []int) Scaffold {
 	}
 	return sc
 }
+
+func (sc Scaffold) Score() int {
+	score := 0
+	for i, staples := range sc.staples {
+		for j, substrand := range staples {
+			if sc.bonds[i][j] >= 0 {
+				score += substrand.Length()
+			}
+		}
+	}
+	return score
+}

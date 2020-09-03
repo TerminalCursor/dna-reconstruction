@@ -69,4 +69,5 @@ func main() {
 		}
 	}
 	fmt.Printf("%v\n", m13mp18)
+	fmt.Printf("%v\n", m13mp18.Score())
 }
