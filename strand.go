@@ -15,19 +15,19 @@ func MakeStrand(bases string) Strand {
 }
 
 func (s Strand) Bases() string {
-	strin := ""
+	bases := ""
 	for _, b := range s.bases {
-		strin += string(b.base)
+		bases += string(b.base)
 	}
-	return strin
+	return bases
 }
 
 func (s Strand) Complement() Strand {
-	out := Strand{}
+	complement := Strand{}
 	for _, b := range s.bases {
-		out.bases = append(out.bases, b.Complement())
+		complement.bases = append(complement.bases, b.Complement())
 	}
-	return out
+	return complement
 }
 
 func (s Strand) Length() int {
